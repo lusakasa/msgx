@@ -1,4 +1,4 @@
-# Mosi
+# msgx
 
 A tiny, flexible, fast, promise-based library for messaging in Firefox and Chrome extensions.
 
