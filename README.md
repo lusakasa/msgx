@@ -95,7 +95,6 @@ export default function server (actions, onConnect, onDisconnect, debug = true) 
     onDisconnect && port.onDisconnect.addListener(() => onDisconnect(port.sender, data))
   })
 }
-
 ```
 
 ### client.js
