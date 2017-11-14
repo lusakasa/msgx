@@ -35,7 +35,7 @@ const actions = {
   zoom: (_, sender) => browser.tabs.getZoom(sender.tab.id)
 }
 function onConnect (sender, msg, data) {
-  const onZoomChange = ({ tabId, newZoomFactor }) => {
+  function onZoomChange ({ tabId, newZoomFactor }) {
     if (sender.tab.id === tabId) msg('zoom', newZoomFactor)
   };
   browser.tabs.onZoomChange.addListener(onZoomChange);
