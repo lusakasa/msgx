@@ -62,7 +62,8 @@ server(actions, onConnect, onDisconnect, debug)
 
 ### Types
 
-* **Messager** - `(action: string, arg: any): Promise<any>`
+* **ClientMessager** - `(action: string, arg: any): Promise<any>`
+* **ServerMessager** - `(action: string, arg: any): void`
 * **ClientAction** - `(arg: any): Promise<any>`
 * **ServerAction** - `(arg: any, sender: MessageSender, data: Object): Promise<any>`
 * **ServerOnConnect** - `(sender: MessageSender, msg: Messager, data: Object): void`
