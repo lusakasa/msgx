@@ -1,4 +1,4 @@
-export default function (actions, onConnect, onDisconnect, debug = true) {
+export default function (actions = {}, onConnect, onDisconnect, debug = true) {
   chrome.runtime.onConnect.addListener(port => {
     if (debug) console.log('connect', port.sender)
     const data = {}

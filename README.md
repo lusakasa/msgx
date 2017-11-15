@@ -94,7 +94,7 @@ msgx is tiny! Read its source code below.
 ### client.js
 
 ```javascript
-export default function (actions, onDisconnect, debug = true) {
+export default function (actions = {}, onDisconnect, debug = true) {
   const port = chrome.runtime.connect()
   let t = 0
   const transactions = {}
@@ -120,7 +120,7 @@ export default function (actions, onDisconnect, debug = true) {
 ### server.js
 
 ```javascript
-export default function (actions, onConnect, onDisconnect, debug = true) {
+export default function (actions = {}, onConnect, onDisconnect, debug = true) {
   chrome.runtime.onConnect.addListener(port => {
     if (debug) console.log('connect', port.sender)
     const data = {}

@@ -1,4 +1,4 @@
-export default function (actions, onDisconnect, debug = true) {
+export default function (actions = {}, onDisconnect, debug = true) {
   const port = chrome.runtime.connect()
   let t = 0
   const transactions = {}
