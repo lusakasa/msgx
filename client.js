@@ -12,12 +12,10 @@ export default function (actions, onDisconnect, debug = true) {
     }
   })
   onDisconnect && port.onDisconnect.addListener(onDisconnect)
-  return async (action, arg) => {
-    return new Promise(resolve => {
-      t++
-      if (debug) console.log(`tx:${t}:${action}`, arg)
-      port.postMessage([t, action, arg])
-      transactions[t] = resolve
-    })
-  }
+  return (action, arg) => new Promise(resolve => {
+    t++
+    if (debug) console.log(`tx:${t}:${action}`, arg)
+    port.postMessage([t, action, arg])
+    transactions[t] = resolve
+  })
 }
