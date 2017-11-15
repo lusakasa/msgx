@@ -1,0 +1,13 @@
+{
+  "name": "msgx-example",
+  "scripts": {
+    "build": "webpack --config webpack.config.js && cp manifest.json dist"
+  },
+  "license": "CC0",
+  "dependencies": {
+    "msgx": "^1.0.2",
+    "rimraf": "^2.6.2",
+    "webextension-polyfill": "^0.2.1",
+    "webpack": "^3.8.1"
+  }
+}
