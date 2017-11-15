@@ -13,7 +13,7 @@ npm install --save msgx
 
 Try this example yourself with `cd test_extension && npm run build`
 
-### Content Script:
+### Content Script
 
 ```javascript
 import client from 'msgx/client'
@@ -26,7 +26,7 @@ msg('sum', 7).then(sum => console.log(`new sum ${sum}`)) // 7
 msg('sum', 3).then(sum => console.log(`new sum ${sum}`)) // 10
 ```
 
-### Background Page:
+### Background Page
 
 ```javascript
 import server from 'msgx/server'
@@ -50,6 +50,42 @@ function onDisconnect (sender, data) {
 const debug = true
 server(actions, onConnect, onDisconnect, debug)
 ```
+
+## API
+
+### server
+
+* **server** - `(actions, onConnect, onDisconnect, debug) => void`
+  * **actions** - an object in which keys are message endpoints whose values are actions, which are functions to call when a message is received. The return value of an actions is sent as the response. 
+    * **action** - `(arg, sender, data) => result`
+      * **arg** - the message's argument, or null if none or undefined
+      * **sender** - the [MessageSender](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender) of the client that sent the message
+      * **data** - data object that exists for the connection's lifetime. Use it to store data that should be garbage collected on disconnect.
+      * **result** - value (potentiall void) to be sent as the response. If a promise, first resolved.
+  * **onConnect** - `(sender, msg, data) => void`
+    * **sender** - the connecting client's [MessageSender](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender)
+    * **msg** - `(action, arg) => void`
+      * **action** - a string identifying the client action that should be triggerd by a message from the server
+      * **arg** - the argument that should be passed to the action
+    * **data** - data object that exists for the connection's lifetime
+  * **onDisconnect** - `(sender, data) => void`
+    * **sender** - the disconnecting client's [MessageSender](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender)
+    * **data** - data object that exists for the connection's lifetime
+  * **debug** - a boolean that enables logging, default is true
+
+### client
+
+* **client** - `(actions, onDisconnect, debug) => msg`
+  * **actions** - an object in which keys are message endpoints whose values are actions, which are functions called by the client when a message is received. The return value is ignored.
+    * **action** - `(arg) => any`
+      * **arg** - the message's argument, or null if none or undefined
+  * **onDisconnect** - `(sender) => void`
+    * **sender** - the client's [MessageSender](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender)
+  * **debug** - a boolean that enables logging, default is true
+  * **msg** - `(action, arg) => Promise<result>`
+      * **action** - a string identifying the server action that should be triggerd by a message from the client
+      * **arg** - the argument that should be passed to the action
+      * **result** - the value returned by the action
 
 ## The Best Docs
 
@@ -103,22 +139,3 @@ export default function (actions, onConnect, onDisconnect, debug = true) {
   })
 }
 ```
-
-## Terminology
-
-* **Client** - an end user that requests data (typically a content script)
-* **Server** - the primary data source, but also capable of pushing data to clients
-* **[MessageSender](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender)** - an object containing metadata about a client, e.g. its url, tabId, etc. 
-* **Action** - a function triggered when a message is received, its return value is the response
-* **Messager** - a function used to send messages to endpoints and fetch the response
-* **Data** - data stored in the server unique to each connected client
-
-## Types
-
-* **ClientMessager** - `(action: string, arg: any): Promise<any>`
-* **ServerMessager** - `(action: string, arg: any): void`
-* **ClientAction** - `(arg: any): Promise<any>`
-* **ServerAction** - `(arg: any, sender: MessageSender, data: Object): Promise<any>`
-* **ServerOnConnect** - `(sender: MessageSender, msg: Messager, data: Object): void`
-* **ClientOnDisconnect** - `(sender: MessageSender): void`
-* **ServerOnDisconnect** - `(sender: MessageSender, data: Object): void`
